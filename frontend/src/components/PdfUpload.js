@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
 function PdfUpload({ setExpenses }) {
   const upload = async (e) => {
     const file = e.target.files[0];
@@ -9,7 +11,7 @@ function PdfUpload({ setExpenses }) {
     form.append("file", file);
 
     const res = await axios.post(
-      "http://127.0.0.1:8000/upload-pdf",
+      `${API_URL}/upload-pdf`,
       form
     );
 

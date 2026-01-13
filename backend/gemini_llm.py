@@ -37,8 +37,8 @@ if not api_key:
 # Configure API
 genai.configure(api_key=api_key)
 
-# ✅ GEMMA MODEL (NO BILLING REQUIRED)
-model = genai.GenerativeModel("models/gemma-3-4b-it")
+# ✅ GEMINI 2.5 FLASH MODEL
+model = genai.GenerativeModel("models/gemini-2.5-flash")
 
 def gemini(prompt: str) -> str:
     try:
@@ -51,5 +51,5 @@ def gemini(prompt: str) -> str:
         )
         return response.text
     except Exception as e:
-        return f"[Gemma Error] {str(e)}"
+        return f"[Gemini Error] {str(e)}"
 

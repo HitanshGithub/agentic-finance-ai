@@ -38,7 +38,7 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 # ✅ GEMINI 2.5 FLASH MODEL
-model = genai.GenerativeModel("models/gemini-2.5-flash")
+model = genai.GenerativeModel("models/gemma-3-27b-it")
 
 def gemini(prompt: str) -> str:
     try:

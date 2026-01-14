@@ -1,8 +1,8 @@
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from agents.controller import ControllerAgent
-from agents.savings_agent import SavingsGoalAgent
-from agents.chat_agent import ChatAgent
+from finance_agents.controller import ControllerAgent
+from finance_agents.savings_agent import SavingsGoalAgent
+from finance_agents.chat_agent import ChatAgent
 from pdf_parser import parse_bank_pdf
 from recurring_detector import detect_recurring_expenses
 from database import (

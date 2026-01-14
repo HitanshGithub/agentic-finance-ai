@@ -1,7 +1,7 @@
-from agents.expense_agent import ExpenseAgent
-from agents.budget_agent import BudgetAgent
-from agents.investment_agent import InvestmentAgent
-from agents.fraud_agent import FraudAgent
+from finance_agents.expense_agent import ExpenseAgent
+from finance_agents.budget_agent import BudgetAgent
+from finance_agents.investment_agent import InvestmentAgent
+from finance_agents.fraud_agent import FraudAgent
 
 class ControllerAgent:
     def __init__(self):

@@ -117,3 +117,80 @@ Based on the above current market information, please respond to:
         return gemini(enhanced_prompt)
     else:
         return gemini(prompt)
+
+
+# ===== REAL WEB SEARCH (HTTP REQUESTS) =====
+# Uses actual API calls to get live data
+
+def get_live_market_data() -> str:
+    """
+    Fetch REAL live market data using HTTP requests.
+    This actually fetches current data from APIs.
+    """
+    from web_search import fetch_financial_context
+    
+    try:
+        context = fetch_financial_context()
+        return context.get('summary', 'Unable to fetch live data')
+    except Exception as e:
+        return f"[Error fetching market data: {e}]"
+
+
+def gemini_with_real_data(prompt: str) -> str:
+    """
+    Generate response with REAL live data from web APIs.
+    Uses HTTP requests to Yahoo Finance, CoinGecko, etc.
+    """
+    from web_search import fetch_financial_context
+    
+    try:
+        # Fetch real market data
+        context = fetch_financial_context(prompt)
+        live_data = context.get('summary', 'No live data available')
+        
+        enhanced_prompt = f"""CURRENT LIVE MARKET DATA (fetched just now via HTTP):
+{live_data}
+
+---
+
+Based on this REAL current data, respond to:
+{prompt}
+
+Important: Reference the actual numbers shown above in your response."""
+
+        return gemini(enhanced_prompt)
+    except Exception as e:
+        return gemini(f"[Note: Live data unavailable due to {e}] {prompt}")
+
+
+def search_and_respond(user_query: str) -> str:
+    """
+    Main function: Fetch real web data first, then generate response.
+    
+    Flow:
+    1. HTTP requests to real financial APIs
+    2. Pass live data + user query to Gemini
+    3. Return response with actual current data
+    """
+    from web_search import search_web
+    
+    # Get real live data
+    live_data = search_web(user_query)
+    
+    prompt = f"""You are a financial advisor with access to REAL-TIME market data.
+
+LIVE DATA (fetched via HTTP just now):
+{live_data}
+
+USER QUERY: {user_query}
+
+Instructions:
+1. Use ONLY the live data provided above for any market references
+2. Cite the actual numbers from the data
+3. Provide actionable advice based on current conditions
+4. If data is missing, acknowledge it
+
+Response:"""
+
+    return gemini(prompt)
+

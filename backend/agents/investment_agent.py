@@ -1,16 +1,16 @@
-from gemini_llm import gemini, gemini_with_search
+from gemini_llm import gemini, get_live_market_data
 
 
 class InvestmentAgent:
-    """Investment advisor that uses real-time market data."""
+    """Investment advisor that uses REAL-TIME market data from HTTP APIs."""
     
     def run(self, profile, budget_report):
-        # First, fetch current market data using Google Search
-        market_data = self._get_market_context()
+        # Fetch REAL current market data using HTTP requests
+        market_data = self._get_real_market_data()
         
-        prompt = f"""You are an investment advisor with access to current market data.
+        prompt = f"""You are an investment advisor with access to REAL current market data.
 
-CURRENT MARKET DATA (from real-time search):
+LIVE MARKET DATA (fetched via HTTP just now):
 {market_data}
 
 ---
@@ -20,24 +20,21 @@ USER PROFILE: {profile}
 BUDGET REPORT:
 {budget_report}
 
-Based on the CURRENT market conditions above, provide:
-1. Investment allocation recommendations
-2. Risk assessment based on current market volatility
-3. Short-term opportunities (next 3-6 months)
+Based on the ACTUAL LIVE market data above, provide:
+1. Investment allocation recommendations with specific percentages
+2. Risk assessment referencing current market volatility from the data
+3. Short-term opportunities (next 3-6 months) based on current trends
 4. Long-term strategy (1-5 years)
 
-Be specific and reference current market conditions in your advice.
-Keep response under 250 words."""
+IMPORTANT: Reference the actual numbers from the live data in your response.
+Keep response under 300 words."""
 
         return gemini(prompt)
     
-    def _get_market_context(self) -> str:
-        """Fetch current market information using Google Search."""
+    def _get_real_market_data(self) -> str:
+        """Fetch REAL market data using HTTP requests to APIs."""
         try:
-            search_query = """Current stock market performance, S&P 500 trends, 
-            interest rates, inflation rate, top performing sectors, 
-            investment opportunities January 2025"""
-            
-            return gemini_with_search(f"Summarize current market conditions: {search_query}")
+            return get_live_market_data()
         except Exception as e:
-            return f"[Market data unavailable: {e}]"
+            return f"[Market data fetch error: {e}]"
+

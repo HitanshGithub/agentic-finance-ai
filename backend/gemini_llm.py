@@ -61,7 +61,7 @@ def gemini_with_search(prompt: str) -> str:
         )
         
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemma-3-27b-it",
             contents=prompt,
             config=config,
         )

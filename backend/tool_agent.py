@@ -108,7 +108,7 @@ INSTRUCTIONS:
 Your response:"""
 
     try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        model = genai.GenerativeModel("models/gemma-3-27b-it")
         response = model.generate_content(
             prompt,
             generation_config={

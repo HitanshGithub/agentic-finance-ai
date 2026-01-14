@@ -3,18 +3,29 @@ from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 import os
 from datetime import datetime
-import certifi
 
 load_dotenv()
 
-# MongoDB connection with SSL certificate fix
+# MongoDB connection with SSL fix for Render
 MONGODB_URI = os.getenv("MONGODB_URI")
-client = MongoClient(
-    MONGODB_URI,
-    server_api=ServerApi('1'),
-    tls=True,
-    tlsCAFile=certifi.where()
-)
+
+try:
+    import certifi
+    client = MongoClient(
+        MONGODB_URI,
+        server_api=ServerApi('1'),
+        tls=True,
+        tlsCAFile=certifi.where()
+    )
+except:
+    # Fallback: allow invalid certificates (for platforms with SSL issues)
+    client = MongoClient(
+        MONGODB_URI,
+        server_api=ServerApi('1'),
+        tls=True,
+        tlsAllowInvalidCertificates=True
+    )
+
 db = client["finance_db"]
 
 # Collections

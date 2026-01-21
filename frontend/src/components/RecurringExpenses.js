@@ -33,10 +33,21 @@ function RecurringExpenses({ expenses = [] }) {
 
     // Auto-analyze when expenses change
     useEffect(() => {
-        if (expenses.length > 0 && !analyzed) {
-            handleAnalyze();
+        // Reset state when expenses change
+        setAnalyzed(false);
+        setRecurring([]);
+        setTotals({ monthly: 0, annual: 0 });
+        setSuggestions([]);
+
+        // Auto-analyze if there are valid expenses
+        if (expenses.length > 0) {
+            const timer = setTimeout(() => {
+                handleAnalyze();
+            }, 100);
+            return () => clearTimeout(timer);
         }
-    }, [expenses]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(expenses)]);
 
     return (
         <div className="recurring-expenses">

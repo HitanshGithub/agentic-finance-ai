@@ -1,70 +1,92 @@
+/* =====================================================
+   TRENDS DASHBOARD - GREEN MONEY THEME
+   ===================================================== */
+
 .trends-dashboard {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 16px;
-    padding: 24px;
+    background: linear-gradient(145deg, #1a1f2a 0%, #0c0f14 100%);
+    border-radius: 20px;
+    padding: 28px;
     margin: 20px 0;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(16, 185, 129, 0.1);
 }
 
 .trends-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.1);
 }
 
 .trends-header h2 {
     color: #fff;
     margin: 0;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .refresh-btn {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 8px 16px;
-    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10b981 !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    padding: 10px 20px !important;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.2s;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
 .refresh-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: #10b981 !important;
 }
 
 .loading,
 .no-data {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    padding: 40px;
+    padding: 60px 20px;
+    font-size: 15px;
 }
 
+/* Tabs */
 .tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: 10px;
+    margin-bottom: 28px;
+    background: rgba(16, 185, 129, 0.03);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(16, 185, 129, 0.08);
 }
 
 .tabs button {
     flex: 1;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
 .tabs button:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
 }
 
 .tabs button.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: transparent;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
 /* Bar Chart */
@@ -72,9 +94,9 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
-    height: 200px;
-    padding: 20px 0;
-    gap: 8px;
+    height: 220px;
+    padding: 24px 0;
+    gap: 10px;
 }
 
 .bar-column {
@@ -86,7 +108,7 @@
 }
 
 .bar-wrapper {
-    height: 160px;
+    height: 170px;
     width: 100%;
     display: flex;
     align-items: flex-end;
@@ -95,24 +117,27 @@
 
 .bar {
     width: 100%;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    border-radius: 8px 8px 0 0;
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    border-radius: 10px 10px 0 0;
     min-height: 4px;
     position: relative;
     transition: height 0.5s ease;
+    box-shadow: 0 -4px 20px rgba(16, 185, 129, 0.2);
 }
 
 .bar:hover {
-    opacity: 0.9;
+    opacity: 0.85;
+    box-shadow: 0 -6px 25px rgba(16, 185, 129, 0.3);
 }
 
 .bar-value {
     position: absolute;
-    top: -24px;
+    top: -28px;
     left: 50%;
     transform: translateX(-50%);
-    color: #fff;
-    font-size: 11px;
+    color: #10b981;
+    font-size: 12px;
+    font-weight: 600;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.2s;
@@ -123,55 +148,63 @@
 }
 
 .bar-label {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
-    margin-top: 8px;
+    margin-top: 10px;
+    font-weight: 500;
 }
 
 /* Comparison Card */
 .comparison {
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 .comparison-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
-    border-radius: 12px;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 14px;
 }
 
 .comparison-card.up {
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(238, 90, 36, 0.1) 100%);
-    border-left: 3px solid #ff6b6b;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+    border-left: 4px solid #ef4444;
 }
 
 .comparison-card.down {
-    background: linear-gradient(135deg, rgba(56, 239, 125, 0.1) 0%, rgba(17, 153, 142, 0.1) 100%);
-    border-left: 3px solid #38ef7d;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%);
+    border-left: 4px solid #10b981;
 }
 
 .comparison-card .icon {
-    font-size: 24px;
+    font-size: 26px;
 }
 
 .comparison-card .text {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 14px;
+    line-height: 1.5;
 }
 
 /* Category List */
 .category-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .category-item {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 12px;
+    gap: 14px;
     align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.05);
+}
+
+.category-item:last-child {
+    border-bottom: none;
 }
 
 .category-info {
@@ -183,31 +216,93 @@
 .category-name {
     color: #fff;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.category-name::before {
+    content: '💸';
+    font-size: 14px;
 }
 
 .category-amount {
-    color: #667eea;
-    font-weight: 600;
+    color: #10b981;
+    font-weight: 700;
+    font-size: 16px;
 }
 
 .category-bar-bg {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+    height: 10px;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 5px;
     overflow: hidden;
     grid-column: 1 / -1;
 }
 
 .category-bar {
     height: 100%;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    border-radius: 4px;
+    background: linear-gradient(90deg, #059669 0%, #10b981 50%, #34d399 100%);
+    border-radius: 5px;
     transition: width 0.5s ease;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
 }
 
 .category-pct {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
+    font-size: 13px;
     text-align: right;
-    min-width: 50px;
+    min-width: 55px;
+    font-weight: 500;
+}
+
+/* Light Mode */
+body:not(.dark) .trends-dashboard {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+body:not(.dark) .trends-header h2 {
+    color: #1e293b;
+}
+
+body:not(.dark) .category-name {
+    color: #1e293b;
+}
+
+body:not(.dark) .bar-label {
+    color: #64748b;
+}
+
+body:not(.dark) .no-data,
+body:not(.dark) .loading {
+    color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .trends-dashboard {
+        padding: 20px;
+    }
+
+    .trends-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+
+    .tabs button {
+        flex: 1 1 45%;
+    }
+
+    .chart-container {
+        height: 180px;
+        overflow-x: auto;
+    }
 }

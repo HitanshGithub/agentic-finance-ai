@@ -20,10 +20,10 @@ class ChatAgent:
         """Lazy load the LangChain agent."""
         if self._agent is None:
             try:
-                from tool_agent import ask_with_context
-                self._agent = ask_with_context
+                from tool_agent import ask_financial_agent
+                self._agent = ask_financial_agent
             except ImportError as e:
-                print(f"LangChain not available: {e}")
+                print(f"LangChain tool agent not available: {e}")
                 self._agent = self._fallback_response
         return self._agent
     

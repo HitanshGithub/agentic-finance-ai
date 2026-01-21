@@ -1,156 +1,455 @@
+/* =====================================================
+   MONEY-ORIENTED GREEN THEME
+   Premium Finance Dashboard Styling
+   ===================================================== */
+
+:root {
+  /* Primary Green Money Palette */
+  --money-green: #10b981;
+  --money-green-dark: #059669;
+  --money-green-light: #34d399;
+  --money-green-glow: rgba(16, 185, 129, 0.4);
+
+  /* Accent Colors */
+  --gold: #f59e0b;
+  --gold-light: #fbbf24;
+  --red-alert: #ef4444;
+  --red-alert-light: #f87171;
+
+  /* Dark Theme Background */
+  --bg-primary: #0c0f14;
+  --bg-secondary: #151920;
+  --bg-card: #1a1f2a;
+  --bg-card-hover: #222836;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-color-hover: rgba(16, 185, 129, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-  color: #000;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
 }
 
 body.dark {
-  background: #0f172a;
-  color: #e5e7eb;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Light mode overrides */
+body:not(.dark) {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: rgba(0, 0, 0, 0.08);
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: auto;
-  padding: 30px;
+  padding: 24px 32px;
 }
+
+/* =====================================================
+   HEADER
+   ===================================================== */
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
 }
+
+header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--money-green) 0%, var(--money-green-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--money-green);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--money-green);
+}
+
+.logout-btn {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--red-alert) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  padding: 10px 20px !important;
+  font-size: 0.85rem !important;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* =====================================================
+   NAVIGATION TABS
+   ===================================================== */
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  background: var(--bg-secondary);
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.nav-tabs button {
+  flex: 1;
+  padding: 14px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nav-tabs button:hover {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--money-green);
+}
+
+.nav-tabs button.active {
+  background: linear-gradient(135deg, var(--money-green) 0%, var(--money-green-dark) 100%);
+  color: white;
+  box-shadow: 0 4px 20px var(--money-green-glow);
+}
+
+/* =====================================================
+   FORM CARD
+   ===================================================== */
 
 .form {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 30px;
+  background: var(--bg-card);
+  padding: 28px;
+  border-radius: 20px;
+  margin-bottom: 32px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
-body.dark .form {
-  background: #1e293b;
+.form h3 {
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 24px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form h3:first-of-type {
+  margin-top: 16px;
 }
 
 input,
 select {
   width: 100%;
-  padding: 10px;
+  padding: 14px 16px;
   margin-bottom: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 15px;
+  transition: all 0.2s ease;
 }
 
-button {
-  padding: 10px 16px;
-  margin: 8px 8px 8px 0;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--money-green);
+  box-shadow: 0 0 0 3px var(--money-green-glow);
+}
+
+input::placeholder {
+  color: var(--text-muted);
+}
+
+select {
   cursor: pointer;
+}
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+
+button {
+  padding: 12px 20px;
+  margin: 8px 8px 8px 0;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button:hover {
+  border-color: var(--money-green);
+  background: rgba(16, 185, 129, 0.1);
 }
 
 button:disabled {
-  background: gray;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.expense-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.expense-row input {
-  flex: 1;
-}
-
-.charts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-body.dark .card {
-  background: #1e293b;
-}
-
-.card h3 {
-  margin-top: 0;
-}
-
-.card p {
-  white-space: pre-line;
-}
-
-/* Navigation Tabs */
-.nav-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-
-.nav-tabs button {
-  flex: 1;
-  min-width: 120px;
-  padding: 14px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-body:not(.dark) .nav-tabs button {
-  background: white;
-  border: 1px solid #e5e7eb;
-  color: #374151;
-}
-
-.nav-tabs button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-body:not(.dark) .nav-tabs button:hover {
-  background: #f3f4f6;
-}
-
-.nav-tabs button.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-color: transparent;
-  color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-/* Analyze Button Enhancement */
 .analyze-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  font-size: 16px;
-  padding: 14px 28px !important;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: linear-gradient(135deg, var(--money-green) 0%, var(--money-green-dark) 100%) !important;
+  border: none !important;
+  color: white !important;
+  font-size: 16px !important;
+  padding: 16px 32px !important;
+  box-shadow: 0 4px 20px var(--money-green-glow);
 }
 
 .analyze-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 30px var(--money-green-glow);
+}
+
+/* =====================================================
+   EXPENSE ROWS
+   ===================================================== */
+
+.expense-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.expense-row input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.expense-row button {
+  margin: 0;
+  padding: 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+  color: var(--red-alert);
+  flex-shrink: 0;
+}
+
+.expense-row button:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--red-alert);
+}
+
+/* =====================================================
+   CHARTS
+   ===================================================== */
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.charts>div {
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+}
+
+/* =====================================================
+   RESULT GRID
+   ===================================================== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   LOADING SPINNER
+   ===================================================== */
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--money-green);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   SCROLLBAR STYLING
+   ===================================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--money-green);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--money-green-light);
+}
+
+/* =====================================================
+   TAB CONTENT
+   ===================================================== */
+
+.tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  .nav-tabs {
+    flex-wrap: wrap;
+  }
+
+  .nav-tabs button {
+    flex: 1 1 45%;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+}
+
+/* =====================================================
+   MONEY ICONS & DECORATIONS
+   ===================================================== */
+
+.money-icon {
+  color: var(--money-green);
+  font-size: 24px;
+}
+
+.money-badge {
+  background: linear-gradient(135deg, var(--money-green) 0%, var(--money-green-dark) 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
 }

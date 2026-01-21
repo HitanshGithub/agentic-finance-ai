@@ -1,153 +1,256 @@
+/* =====================================================
+   RECURRING EXPENSES - GREEN MONEY THEME
+   ===================================================== */
+
 .recurring-expenses {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border-radius: 16px;
-    padding: 24px;
+    background: linear-gradient(145deg, #1a1f2a 0%, #0c0f14 100%);
+    border-radius: 20px;
+    padding: 28px;
     margin: 20px 0;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(16, 185, 129, 0.1);
 }
 
 .recurring-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.1);
 }
 
 .recurring-header h2 {
     color: #fff;
     margin: 0;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.analyze-btn {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+.recurring-header .analyze-btn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    border-radius: 12px;
     cursor: pointer;
     font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.analyze-btn:hover:not(:disabled) {
+.recurring-header .analyze-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
-.analyze-btn:disabled {
-    opacity: 0.7;
+.recurring-header .analyze-btn:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
+    transform: none;
 }
 
 .no-data {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    padding: 40px;
+    padding: 60px 20px;
+    font-size: 15px;
 }
 
+/* Summary Cards */
 .summary-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
 }
 
 .summary-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 20px;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 16px;
+    padding: 24px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+    transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.08);
 }
 
 .summary-card .label {
     display: block;
     color: rgba(255, 255, 255, 0.6);
     font-size: 13px;
-    margin-bottom: 8px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .summary-card .value {
     display: block;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
 }
 
 .summary-card.monthly .value {
-    color: #f093fb;
+    color: #10b981;
 }
 
 .summary-card.annual .value {
-    color: #f5576c;
+    color: #34d399;
 }
 
+/* Suggestions */
 .suggestions {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .suggestion-item {
-    background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
-    border-left: 3px solid #f093fb;
-    padding: 12px 16px;
-    border-radius: 0 8px 8px 0;
-    margin-bottom: 8px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(251, 191, 36, 0.08) 100%);
+    border-left: 3px solid #f59e0b;
+    padding: 14px 18px;
+    border-radius: 0 12px 12px 0;
+    margin-bottom: 10px;
     color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
 
+/* Recurring List */
 .recurring-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 .recurring-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.2s;
+    background: rgba(16, 185, 129, 0.03);
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(16, 185, 129, 0.08);
+    transition: all 0.2s ease;
 }
 
 .recurring-item:hover {
-    transform: translateX(4px);
+    transform: translateX(6px);
+    background: rgba(16, 185, 129, 0.06);
+    border-color: rgba(16, 185, 129, 0.2);
 }
 
 .item-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .item-name {
     color: #fff;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.item-name::before {
+    content: '💳';
+    font-size: 14px;
 }
 
 .item-frequency {
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .item-amounts {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 6px;
 }
 
 .monthly-amount {
-    color: #f093fb;
-    font-weight: 600;
-    font-size: 15px;
+    color: #10b981;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .annual-amount {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
+}
+
+/* Light Mode */
+body:not(.dark) .recurring-expenses {
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(16, 185, 129, 0.1);
+}
+
+body:not(.dark) .recurring-header h2 {
+    color: #1e293b;
+}
+
+body:not(.dark) .summary-card .label {
+    color: #64748b;
+}
+
+body:not(.dark) .item-name {
+    color: #1e293b;
+}
+
+body:not(.dark) .no-data {
+    color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .recurring-expenses {
+        padding: 20px;
+    }
+
+    .recurring-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .recurring-header .analyze-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .summary-card .value {
+        font-size: 24px;
+    }
+
+    .recurring-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .item-amounts {
+        align-items: flex-start;
+        flex-direction: row;
+        gap: 16px;
+    }
 }

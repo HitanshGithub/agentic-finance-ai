@@ -4,6 +4,9 @@ requests==2.31.0
 
 google-generativeai==0.4.1
 
+# Explicitly add PyYAML to fix 'cython_sources' build error
+PyYAML>=6.0.1
+
 python-dotenv==1.0.1
 
 pypdf==4.2.0
@@ -14,11 +17,10 @@ certifi
 google-genai
 beautifulsoup4
 
-# LangChain for tool calling
+# LangChain
 langchain
 langchain-google-genai
 langchain-core
-langchain-hyperbrowser
 
 # Authentication
 PyJWT==2.8.0

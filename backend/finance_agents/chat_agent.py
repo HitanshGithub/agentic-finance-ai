@@ -71,15 +71,19 @@ Answer concisely (under 100 words):"""
         parts = ["USER'S FINANCIAL CONTEXT:"]
         
         if context.get("income"):
-            parts.append(f"- Monthly Income: ${context['income']}")
+            parts.append(f"- Monthly Income: ₹{context['income']}")
         
         if context.get("expenses"):
             total = sum(e.get("amount", 0) for e in context["expenses"])
-            parts.append(f"- Total Expenses: ${total}")
+            parts.append(f"- Total Expenses: ₹{total}")
         
         if context.get("goals"):
-            goal_names = ", ".join([g.get("name", "Goal") for g in context["goals"][:3]])
-            parts.append(f"- Savings Goals: {goal_names}")
+             # Format goals nicely
+            goals_str = ", ".join([
+                f"{g.get('name', 'Goal')} (Target: ₹{g.get('target', 0)})" 
+                for g in context["goals"][:3]
+            ])
+            parts.append(f"- Savings Goals: {goals_str}")
         
         return "\n".join(parts) if len(parts) > 1 else "No financial context available."
     

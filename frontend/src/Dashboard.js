@@ -169,7 +169,7 @@ function Dashboard() {
         <div className="form">
           <input
             type="number"
-            placeholder="Monthly Income"
+            placeholder="Monthly Income (₹)"
             value={income}
             onChange={(e) => setIncome(e.target.value)}
           />
@@ -192,7 +192,7 @@ function Dashboard() {
               />
               <input
                 type="number"
-                placeholder="Amount"
+                placeholder="Amount (₹)"
                 value={exp.amount}
                 onChange={(e) =>
                   updateExpense(i, "amount", e.target.value)

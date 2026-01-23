@@ -21,6 +21,7 @@ beautifulsoup4
 langchain
 langchain-google-genai
 langchain-core
+langchain-hyperbrowser
 
 # Authentication
 PyJWT==2.8.0

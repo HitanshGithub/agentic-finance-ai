@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { getGoals, createGoal, updateGoal, deleteGoal, getGoalSuggestions } from "../api";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./SavingsGoals.css";
 
 function SavingsGoals({ income = 0 }) {
@@ -9,6 +11,8 @@ function SavingsGoals({ income = 0 }) {
     const [newGoal, setNewGoal] = useState({ name: "", target: "", current: "", deadline: "" });
     const [suggestions, setSuggestions] = useState({});
     const [loadingSuggestions, setLoadingSuggestions] = useState({});
+
+    const [editingGoal, setEditingGoal] = useState(null);
 
     useEffect(() => {
         fetchGoals();
@@ -45,15 +49,29 @@ function SavingsGoals({ income = 0 }) {
         }
     };
 
-    const handleUpdate = async (id, current) => {
-        const newAmount = prompt("Enter new current savings amount:", current);
-        if (newAmount !== null) {
-            try {
-                await updateGoal(id, { current: parseFloat(newAmount) });
-                fetchGoals();
-            } catch (err) {
-                console.error("Error updating goal:", err);
-            }
+    // Open Edit Modal
+    const handleEditClick = (goal) => {
+        setEditingGoal(goal);
+    };
+
+    // Save Edited Goal
+    const handleSaveEdit = async () => {
+        if (!editingGoal.target) {
+            alert("Target amount is required");
+            return;
+        }
+
+        try {
+            await updateGoal(editingGoal._id, {
+                name: editingGoal.name,
+                target: parseFloat(editingGoal.target),
+                current: parseFloat(editingGoal.current) || 0,
+                deadline: editingGoal.deadline || null
+            });
+            setEditingGoal(null); // Close modal
+            fetchGoals();
+        } catch (err) {
+            console.error("Error updating goal:", err);
         }
     };
 
@@ -95,6 +113,7 @@ function SavingsGoals({ income = 0 }) {
                 </button>
             </div>
 
+            {/* Create Goal Form */}
             {showForm && (
                 <div className="goal-form">
                     <input
@@ -105,13 +124,13 @@ function SavingsGoals({ income = 0 }) {
                     />
                     <input
                         type="number"
-                        placeholder="Target amount ($)"
+                        placeholder="Target amount (₹)"
                         value={newGoal.target}
                         onChange={(e) => setNewGoal({ ...newGoal, target: e.target.value })}
                     />
                     <input
                         type="number"
-                        placeholder="Current savings ($)"
+                        placeholder="Current savings (₹)"
                         value={newGoal.current}
                         onChange={(e) => setNewGoal({ ...newGoal, current: e.target.value })}
                     />
@@ -136,7 +155,7 @@ function SavingsGoals({ income = 0 }) {
                                 <div className="goal-info">
                                     <h3>{goal.name}</h3>
                                     <p className="goal-amounts">
-                                        ${goal.current?.toLocaleString() || 0} / ${goal.target?.toLocaleString() || 0}
+                                        ₹{goal.current?.toLocaleString() || 0} / ₹{goal.target?.toLocaleString() || 0}
                                     </p>
                                     {goal.deadline && (
                                         <p className="goal-deadline">📅 Deadline: {goal.deadline}</p>
@@ -152,8 +171,9 @@ function SavingsGoals({ income = 0 }) {
                                 </div>
 
                                 <div className="goal-actions">
-                                    <button onClick={() => handleUpdate(goal._id, goal.current)}>
-                                        💰 Update
+                                    {/* Edit Button triggers Modal */}
+                                    <button onClick={() => handleEditClick(goal)}>
+                                        💰 Update / Edit
                                     </button>
                                     <button
                                         onClick={() => handleGetSuggestions(goal._id)}
@@ -169,12 +189,58 @@ function SavingsGoals({ income = 0 }) {
                                 {suggestions[goal._id] && (
                                     <div className="suggestions-box">
                                         <h4>💡 AI Suggestions:</h4>
-                                        <p>{suggestions[goal._id]}</p>
+                                        <div className="markdown-content">
+                                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                {suggestions[goal._id]}
+                                            </ReactMarkdown>
+                                        </div>
                                     </div>
                                 )}
                             </div>
                         );
                     })}
+                </div>
+            )}
+
+            {/* EDIT MODAL */}
+            {editingGoal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>✏️ Edit Goal</h3>
+
+                        <label>Goal Name</label>
+                        <input
+                            type="text"
+                            value={editingGoal.name}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, name: e.target.value })}
+                        />
+
+                        <label>Target Amount (₹)</label>
+                        <input
+                            type="number"
+                            value={editingGoal.target}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, target: e.target.value })}
+                        />
+
+                        <label>Current Savings (₹)</label>
+                        <input
+                            type="number"
+                            value={editingGoal.current}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, current: e.target.value })}
+                        />
+
+                        <label>Deadline</label>
+                        <input
+                            type="date"
+                            value={editingGoal.deadline ? editingGoal.deadline.split('T')[0] : ''}
+                            onChange={(e) => setEditingGoal({ ...editingGoal, deadline: e.target.value })}
+                        />
+
+                        <div className="modal-actions">
+                            <button onClick={handleSaveEdit} className="save-btn">💾 Save Changes</button>
+                            <button onClick={() => setEditingGoal(null)} className="cancel-btn">❌ Cancel</button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

@@ -13,8 +13,15 @@ import google.generativeai as genai
 load_dotenv()
 
 # Configure Gemma
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("models/gemma-3-27b-it")
+# Configure Gemini with LangChain
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.messages import HumanMessage
+
+model = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
+    temperature=0,
+    google_api_key=os.getenv("GEMINI_API_KEY")
+)
 
 
 # ===== DATA FETCHING TOOLS =====
@@ -25,145 +32,116 @@ def get_current_date() -> str:
 
 
 def get_gold_price_india() -> str:
-    """Fetch current gold prices in India."""
+    """Fetch current gold prices in India from GoodReturns."""
     try:
         from bs4 import BeautifulSoup
         
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-        response = requests.get("https://www.goodreturns.in/gold-rates/", headers=headers, timeout=15)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        # Fetching from the standard gold-rates.html page (User referred to as gold-price.html)
+        response = requests.get("https://www.goodreturns.in/gold-rates.html", headers=headers, timeout=15)
         
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            import re
+            
+            # Simple text scraping strategy for GoodReturns specific structure
+            # Looking for 24K Gold price
+            # Text often appears as "24K Gold Price Today ... ₹ 1,59,710"
             text = soup.get_text()
             
-            # Look for prices in the range of 1,40,000+ (current gold prices are high)
-            matches = re.findall(r'(?:Rs\.?|₹)\s*([\d,]+)', text)
-            for match in matches:
-                price = int(match.replace(',', ''))
-                # Current gold is around ₹1,45,000 per 10g (Jan 2026)
-                if 130000 <= price <= 200000:
-                    return f"Gold 24K: ₹{price:,}/10g ({datetime.now().strftime('%Y-%m-%d')})"
+            # Regex to find 24K price, looking for standard format
+            import re
+            # Matches "24K Gold" followed by price
+            # Adjust regex to capture the price which might include newlines or spaces
+            # Example target: "24K Gold... 1,59,710"
+            
+            # Try finding specific price container if possible, otherwise regex on full text
+            # Goodreturns usually has tables. Let's look for "24K" in text.
+            
+            # fallback to specific patterns based on user screenshot prices (~1.5L)
+            matches = re.findall(r'24K\s+Gold.*?(?:Rs\.?|₹)\s*([\d,]+)', text, re.IGNORECASE | re.DOTALL)
+            
+            if matches:
+                 # Taking the first match which is usually 10g
+                price_str = matches[0].strip()
+                return f"Gold 24K: ₹{price_str}/10g (Source: GoodReturns)"
+            
+            # Alternative: direct search for price pattern if label is separate
+            all_prices = re.findall(r'(?:Rs\.?|₹)\s*([\d,]{4,10})', text)
+            for p in all_prices:
+                p_val = int(p.replace(',', ''))
+                if 140000 <= p_val <= 200000: # Contextual validation for 10g Gold
+                     return f"Gold 24K: ₹{p}/10g (Source: GoodReturns)"
+
     except Exception as e:
-        print(f"Scraping error: {e}")
+        print(f"Gold scraping error: {e}")
     
-    # Fallback - calculate from international gold price
-    try:
-        resp = requests.get("https://api.metals.live/v1/spot", timeout=10)
-        if resp.status_code == 200:
-            for metal in resp.json():
-                if metal.get('name', '').lower() == 'gold':
-                    usd_per_oz = metal.get('price', 2650)
-                    # 1 oz = 31.1g, current USD/INR ~ 83-84
-                    inr_per_10g = (usd_per_oz / 31.1) * 10 * 84
-                    return f"Gold 24K (calculated): ₹{inr_per_10g:,.0f}/10g ({datetime.now().strftime('%Y-%m-%d')})"
-    except:
-        pass
-    
-    # Updated fallback - gold in Jan 2026 is around ₹1,45,000/10g
-    return f"Gold 24K: ~₹1,45,000-1,50,000/10g ({datetime.now().strftime('%Y-%m-%d')}) - check goodreturns.in"
+    return "Gold price unavailable (Check goodreturns.in)"
 
 
 def get_stock_market_data() -> str:
-    """Fetch S&P 500 and NASDAQ data."""
+    """Fetch NIFTY and SENSEX from GoodReturns."""
     try:
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        from bs4 import BeautifulSoup
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        response = requests.get("https://www.goodreturns.in/", headers=headers, timeout=15)
+        
         results = []
-        
-        # S&P 500
-        try:
-            resp = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=1d&range=1d", headers=headers, timeout=10)
-            if resp.status_code == 200:
-                meta = resp.json().get('chart', {}).get('result', [{}])[0].get('meta', {})
-                price = meta.get('regularMarketPrice', 0)
-                prev = meta.get('previousClose', 0)
-                change = ((price - prev) / prev * 100) if prev else 0
-                results.append(f"S&P 500: {price:,.2f} ({change:+.2f}%)")
-        except:
-            pass
-        
-        # NASDAQ
-        try:
-            resp = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/%5EIXIC?interval=1d&range=1d", headers=headers, timeout=10)
-            if resp.status_code == 200:
-                meta = resp.json().get('chart', {}).get('result', [{}])[0].get('meta', {})
-                price = meta.get('regularMarketPrice', 0)
-                prev = meta.get('previousClose', 0)
-                change = ((price - prev) / prev * 100) if prev else 0
-                results.append(f"NASDAQ: {price:,.2f} ({change:+.2f}%)")
-        except:
-            pass
-        
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            text = soup.get_text()
+            import re
+            
+            # Regex for Sensex
+            # Matches "Sensex" followed closely by number like "82,308.85"
+            sensex_match = re.search(r'Sensex\s*[:\-]?\s*([\d,]+\.?\d*)', text, re.IGNORECASE)
+            if sensex_match:
+                results.append(f"SENSEX: {sensex_match.group(1)}")
+            
+            # Regex for Nifty
+            nifty_match = re.search(r'Nifty\s*[:\-]?\s*([\d,]+\.?\d*)', text, re.IGNORECASE)
+            if nifty_match:
+                results.append(f"NIFTY 50: {nifty_match.group(1)}")
+                
         if results:
-            return f"US Markets ({datetime.now().strftime('%Y-%m-%d')}): " + " | ".join(results)
-    except:
-        pass
-    return "Stock market data unavailable"
-
-
-def get_crypto_prices() -> str:
-    """Fetch Bitcoin and Ethereum prices."""
-    try:
-        resp = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,inr&include_24hr_change=true", timeout=10)
-        if resp.status_code == 200:
-            data = resp.json()
-            parts = []
-            if 'bitcoin' in data:
-                btc = data['bitcoin']
-                parts.append(f"BTC: ${btc.get('usd', 0):,.0f} (₹{btc.get('inr', 0):,.0f}) [{btc.get('usd_24h_change', 0):+.1f}%]")
-            if 'ethereum' in data:
-                eth = data['ethereum']
-                parts.append(f"ETH: ${eth.get('usd', 0):,.0f} (₹{eth.get('inr', 0):,.0f}) [{eth.get('usd_24h_change', 0):+.1f}%]")
-            if parts:
-                return f"Crypto ({datetime.now().strftime('%Y-%m-%d')}): " + " | ".join(parts)
-    except:
-        pass
-    return "Crypto data unavailable"
+            return f"Indian Markets: " + " | ".join(results) + " (Source: GoodReturns)"
+            
+    except Exception as e:
+        print(f"Stock scraping error: {e}")
+        
+    return "Indian Market data unavailable (Check goodreturns.in)"
 
 
 def get_silver_price() -> str:
-    """Fetch current silver prices from MoneyControl."""
+    """Fetch current silver prices from GoodReturns."""
     try:
         from bs4 import BeautifulSoup
-        
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-        
-        # Try MoneyControl silver page
-        response = requests.get("https://www.moneycontrol.com/commodity/silver-price.html", headers=headers, timeout=15)
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+        # Fetching from the standard silver-rates.html page (User referred to as silver-price.html)
+        response = requests.get("https://www.goodreturns.in/silver-rates.html", headers=headers, timeout=15)
         
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            import re
             text = soup.get_text()
+            import re
             
-            # Look for silver prices (around ₹90,000-1,00,000 per kg or ₹90-100 per gram)
+            # Looking for 1kg price, which user says is around 3,30,000+
+            # Regex to find "Silver" followed by price
+            # Pattern: "Silver... ₹ 3,40,000"
+            
+            # Look for large numbers associated with Silver
             matches = re.findall(r'(?:Rs\.?|₹)\s*([\d,]+)', text)
             for match in matches:
                 price = int(match.replace(',', ''))
-                # Silver is around ₹90,000-1,10,000 per KG
-                if 80000 <= price <= 150000:
-                    return f"Silver: ₹{price:,}/kg ({datetime.now().strftime('%Y-%m-%d')})"
-                # Or per 10g (around ₹900-1100)
-                if 800 <= price <= 1500:
-                    return f"Silver: ₹{price:,}/10g ({datetime.now().strftime('%Y-%m-%d')})"
+                # Validation range based on user input (3.3L to 4.0L)
+                if 300000 <= price <= 400000:
+                    return f"Silver: ₹{price:,}/kg (Source: GoodReturns)"
+                    
     except Exception as e:
         print(f"Silver scraping error: {e}")
     
-    # Fallback - calculate from international silver price
-    try:
-        resp = requests.get("https://api.metals.live/v1/spot", timeout=10)
-        if resp.status_code == 200:
-            for metal in resp.json():
-                if metal.get('name', '').lower() == 'silver':
-                    usd_per_oz = metal.get('price', 30)
-                    # 1 oz = 31.1g, USD/INR ~ 84
-                    inr_per_kg = (usd_per_oz / 31.1) * 1000 * 84
-                    return f"Silver (calculated): ₹{inr_per_kg:,.0f}/kg ({datetime.now().strftime('%Y-%m-%d')})"
-    except:
-        pass
-    
-    # Fallback - current silver is around ₹95,000/kg in Jan 2026
-    return f"Silver: ~₹95,000-1,00,000/kg ({datetime.now().strftime('%Y-%m-%d')}) - check moneycontrol.com"
+    return "Silver price unavailable (Check goodreturns.in)"
 
 
 # ===== MAIN AGENT FUNCTION =====
@@ -200,32 +178,38 @@ def ask_financial_agent(question: str, context: dict = None) -> str:
             total = sum(e.get('amount', 0) for e in context['expenses'])
             user_context += f"\n- Expenses: ₹{total}"
         if context.get('goals'):
-            goals = ", ".join([g.get('name', 'Goal') for g in context['goals']])
+            goals = ", ".join([f"{g.get('name', 'Goal')} (Target: ₹{g.get('target', 0)})" for g in context['goals']])
             user_context += f"\n- Goals: {goals}"
     
     # Step 3: Create prompt with live data
-    prompt = f"""You are a financial advisor. Use ONLY the live data below to answer questions.
+    prompt = f"""You are a helpful financial advisor.
 
 {live_data}
-{f"USER CONTEXT:{user_context}" if user_context else ""}
+
+OPTIONAL BACKGROUND INFO (only use if specific to the question):
+{user_context if user_context else "None provided"}
 
 USER QUESTION: {question}
 
-INSTRUCTIONS:
-1. Use the LIVE DATA above - these are real current prices
-2. Reference specific numbers from the data
-3. Give helpful, actionable advice
-4. Keep response concise (under 150 words)
+**STRICT INSTRUCTIONS**:
+1. **Analyze Intent**:
+   - **Greeting/Small Talk**: Respond naturally. Do NOT mention crypto, stocks, or goals.
+   - **General Market Question** (e.g., "best sectors", "gold price", "market trends"): Answer using ONLY the LIVE DATA. **ABSOLUTELY DO NOT** mention the user's specific goals (like "wedding", "car", etc.) unless the user *explicitly* names them in the *current* question. Treat general questions as general.
+   - **Personal Advice**: If the user asks "how do *I* save" or "for *my* goal", THEN use the Background Info.
+
+2. **Content Rules**:
+   - Reference specific numbers from LIVE DATA.
+   - ALWAYS use Indian Rupees (₹).
+   - If answering a general question, do NOT say "Considering your wedding fund...". Just answer the question.
+
+3. Keep response concise (under 150 words).
 
 Your response:"""
 
     # Step 4: Generate response with Gemma
     try:
-        response = model.generate_content(
-            prompt,
-            generation_config={"temperature": 0.7, "max_output_tokens": 400}
-        )
-        return response.text
+        response = model.invoke([HumanMessage(content=prompt)])
+        return response.content
     except Exception as e:
         return f"Error: {str(e)}"
 

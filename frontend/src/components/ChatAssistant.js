@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { sendChatMessage, clearChat } from "../api";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./ChatAssistant.css";
 
 function ChatAssistant({ income = 0, expenses = [], goals = [] }) {
@@ -88,7 +90,9 @@ function ChatAssistant({ income = 0, expenses = [], goals = [] }) {
                         {messages.map((msg, i) => (
                             <div key={i} className={`message ${msg.role}`}>
                                 <div className="message-content">
-                                    {msg.content}
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                        {msg.content}
+                                    </ReactMarkdown>
                                 </div>
                             </div>
                         ))}

@@ -91,9 +91,9 @@ function TrendsDashboard() {
                                                 <div
                                                     className="bar"
                                                     style={{ height: `${barHeight}%` }}
-                                                    title={`$${month.total_expenses.toLocaleString()}`}
+                                                    title={`\u20B9${month.total_expenses.toLocaleString()}`}
                                                 >
-                                                    <span className="bar-value">${month.total_expenses}</span>
+                                                    <span className="bar-value">₹{month.total_expenses}</span>
                                                 </div>
                                             </div>
                                             <span className="bar-label">{formatMonth(month.month)}</span>
@@ -143,7 +143,7 @@ function TrendsDashboard() {
                                     <div key={i} className="category-item">
                                         <div className="category-info">
                                             <span className="category-name">{category}</span>
-                                            <span className="category-amount">${amount.toLocaleString()}</span>
+                                            <span className="category-amount">₹{amount.toLocaleString()}</span>
                                         </div>
                                         <div className="category-bar-bg">
                                             <div

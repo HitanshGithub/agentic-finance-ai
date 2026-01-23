@@ -26,7 +26,9 @@ Based on the ACTUAL LIVE market data above, provide:
 3. Short-term opportunities (next 3-6 months) based on current trends
 4. Long-term strategy (1-5 years)
 
-IMPORTANT: Reference the actual numbers from the live data in your response.
+IMPORTANT: 
+- Reference the actual numbers from the live data in your response.
+- All investment values should be in Indian Rupees (₹).
 Keep response under 300 words."""
 
         return gemini(prompt)

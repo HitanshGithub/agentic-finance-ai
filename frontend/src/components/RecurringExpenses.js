@@ -72,11 +72,11 @@ function RecurringExpenses({ expenses = [] }) {
                     <div className="summary-cards">
                         <div className="summary-card monthly">
                             <span className="label">Monthly Total</span>
-                            <span className="value">${totals.monthly.toLocaleString()}</span>
+                            <span className="value">₹{totals.monthly.toLocaleString()}</span>
                         </div>
                         <div className="summary-card annual">
                             <span className="label">Annual Total</span>
-                            <span className="value">${totals.annual.toLocaleString()}</span>
+                            <span className="value">₹{totals.annual.toLocaleString()}</span>
                         </div>
                     </div>
 
@@ -100,8 +100,8 @@ function RecurringExpenses({ expenses = [] }) {
                                     <span className="item-frequency">{item.frequency}</span>
                                 </div>
                                 <div className="item-amounts">
-                                    <span className="monthly-amount">${item.amount}/mo</span>
-                                    <span className="annual-amount">${item.annual_cost}/yr</span>
+                                    <span className="monthly-amount">₹{item.amount}/mo</span>
+                                    <span className="annual-amount">₹{item.annual_cost}/yr</span>
                                 </div>
                             </div>
                         ))}

@@ -18,20 +18,22 @@ class SavingsGoalAgent:
         
         expense_summary = ""
         if expenses:
-            expense_summary = ", ".join([f"{e['category']}: ${e['amount']}" for e in expenses[:5]])
+            expense_summary = ", ".join([f"{e['category']}: ₹{e['amount']}" for e in expenses[:5]])
         
-        prompt = f"""You are a personal finance advisor. A user wants to save for: {goal.get('name', 'their goal')}
+        prompt = f"""You are a personal finance advisor for an Indian user. A user wants to save for: {goal.get('name', 'their goal')}
 
 Goal Details:
-- Target Amount: ${goal.get('target', 0)}
-- Current Savings: ${goal.get('current', 0)} ({progress_pct:.1f}% complete)
-- Remaining: ${remaining}
+- Target Amount: ₹{goal.get('target', 0)}
+- Current Savings: ₹{goal.get('current', 0)} ({progress_pct:.1f}% complete)
+- Remaining: ₹{remaining}
 - Deadline: {goal.get('deadline', 'Not set')}
 
-User's Monthly Income: ${income}
+User's Monthly Income: ₹{income}
 Top Expenses: {expense_summary or 'Not provided'}
 
-Provide 3-4 specific, actionable tips to help them reach this goal faster. Be encouraging and practical. Keep response under 150 words."""
+Provide 3-4 specific, actionable tips to help them reach this goal faster. Be encouraging and practical.
+IMPORTANT: All monetary values are in Indian Rupees (₹). Do NOT mention Dollars ($).
+Keep response under 150 words."""
 
         return gemini(prompt)
     

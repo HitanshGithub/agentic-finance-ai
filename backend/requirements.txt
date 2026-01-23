@@ -2,7 +2,8 @@ fastapi==0.110.0
 uvicorn==0.29.0
 requests==2.31.0
 
-google-generativeai==0.4.1
+google-generativeai
+
 
 # Explicitly add PyYAML to fix 'cython_sources' build error
 PyYAML>=6.0.1

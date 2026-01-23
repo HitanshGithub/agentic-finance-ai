@@ -22,7 +22,6 @@ langchain==0.2.16
 langchain-community==0.2.16
 langchain-core==0.2.38
 langchain-google-genai==1.0.10
-langchain-hyperbrowser
 
 # Authentication
 PyJWT==2.8.0

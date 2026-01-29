@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 import './Auth.css';
 
@@ -12,8 +11,7 @@ function Signup() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
-    const { signup, googleLogin } = useAuth();
-    const navigate = useNavigate();
+    const { signup } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,24 +37,6 @@ function Signup() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleGoogleSuccess = async (credentialResponse) => {
-        setError('');
-        setLoading(true);
-
-        try {
-            await googleLogin(credentialResponse.credential);
-            navigate('/');
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleError = () => {
-        setError('Google sign-in failed. Please try again.');
     };
 
     if (success) {
@@ -135,19 +115,6 @@ function Signup() {
                         {loading ? <><span className="spinner"></span>Creating Account...</> : 'Sign Up'}
                     </button>
                 </form>
-
-                <div className="auth-divider">
-                    <span>or continue with</span>
-                </div>
-
-                <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    theme="filled_black"
-                    size="large"
-                    width="100%"
-                    text="signup_with"
-                />
 
                 <div className="auth-footer">
                     Already have an account? <Link to="/login">Sign in</Link>

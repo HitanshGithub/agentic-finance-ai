@@ -46,10 +46,6 @@ export const login = async (email, password) => {
   return res.data;
 };
 
-export const googleLogin = async (token) => {
-  const res = await api.post('/auth/google', { token });
-  return res.data;
-};
 
 export const verifyEmail = async (token) => {
   const res = await api.get(`/auth/verify/${token}`);

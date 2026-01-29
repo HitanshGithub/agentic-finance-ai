@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { login as apiLogin, signup as apiSignup, googleLogin as apiGoogleLogin, getCurrentUser } from './api';
+import { login as apiLogin, signup as apiSignup, getCurrentUser } from './api';
 
 const AuthContext = createContext(null);
 
@@ -60,20 +60,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const googleLogin = async (googleToken) => {
-        setError(null);
-        try {
-            const response = await apiGoogleLogin(googleToken);
-            localStorage.setItem('token', response.access_token);
-            setUser(response.user);
-            return response;
-        } catch (err) {
-            const message = err.response?.data?.detail || 'Google login failed';
-            setError(message);
-            throw new Error(message);
-        }
-    };
-
     const logout = () => {
         localStorage.removeItem('token');
         setUser(null);
@@ -85,7 +71,6 @@ export const AuthProvider = ({ children }) => {
         error,
         login,
         signup,
-        googleLogin,
         logout,
         isAuthenticated: !!user
     };
@@ -98,3 +83,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export default AuthContext;
+

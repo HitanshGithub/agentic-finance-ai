@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../AuthContext';
 import './Auth.css';
 
@@ -10,7 +9,7 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const { login, googleLogin } = useAuth();
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -26,24 +25,6 @@ function Login() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleGoogleSuccess = async (credentialResponse) => {
-        setError('');
-        setLoading(true);
-
-        try {
-            await googleLogin(credentialResponse.credential);
-            navigate('/');
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleError = () => {
-        setError('Google sign-in failed. Please try again.');
     };
 
     return (
@@ -85,19 +66,6 @@ function Login() {
                         {loading ? <><span className="spinner"></span>Signing in...</> : 'Sign In'}
                     </button>
                 </form>
-
-                <div className="auth-divider">
-                    <span>or continue with</span>
-                </div>
-
-                <GoogleLogin
-                    onSuccess={handleGoogleSuccess}
-                    onError={handleGoogleError}
-                    theme="filled_black"
-                    size="large"
-                    width="100%"
-                    text="signin_with"
-                />
 
                 <div className="auth-footer">
                     Don't have an account? <Link to="/signup">Sign up</Link>
